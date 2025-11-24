@@ -1,15 +1,22 @@
-import uuid
+from typing import List
+from uuid import uuid4, UUID
 
-from sqlalchemy import Column, Integer, String, Boolean
-from sqlalchemy.dialects.postgresql import UUID
-
-from database import Base
+from sqlmodel import SQLModel, Field, Relationship
 
 
-class User(Base):
-    __tablename__ = "users"
+class User(SQLModel, table=True):
+    id: UUID = Field(default_factory=uuid4, primary_key=True)
+    fullname: str
+    username: str = Field(unique=True)
+    password: str
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4())
-    name = Column(String, index=True)
-    age = Column(Integer)
-    is_married = Column(Boolean, default=False)
+    posts: List["UserPost"] = Relationship(back_populates="user")
+
+
+class UserPost(SQLModel, table=True):
+    id: UUID = Field(default_factory=uuid4, primary_key=True)
+    user_id: UUID = Field(foreign_key="users.id")
+    title: str
+    content: str
+
+    user: "User" = Relationship(back_populates="posts")

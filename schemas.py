@@ -1,19 +1,38 @@
 from uuid import UUID
 
-from pydantic import BaseModel
+from sqlmodel import SQLModel
 
 
-class UserRequest(BaseModel):
-    name: str
-    age: int
-    is_married: bool = False
+class UserRegisterRequest(SQLModel):
+    fullname: str
+    username: str
+    password: str
 
 
-class UserResponse(BaseModel):
+class UserLoginRequest(SQLModel):
+    username: str
+    password: str
+
+
+class UserResponse(SQLModel):
     id: UUID
-    name: str
-    age: int
-    is_married: bool
+    token: str
+
+    class Config:
+        from_attributes = True
+
+
+class UserPostRequest(SQLModel):
+    user_id: UUID
+    title: str
+    content: str
+
+
+class UserPostResponse(SQLModel):
+    id: UUID
+    user_id: UUID
+    title: str
+    content: str
 
     class Config:
         from_attributes = True
