@@ -21,9 +21,9 @@ def upgrade() -> None:
     op.create_table(
         "users",
         sa.Column("id", sa.UUID(as_uuid=True), primary_key=True, server_default=sa.text("gen_random_uuid()")),
-        sa.Column("name", sa.String(200), nullable=False),
-        sa.Column("age", sa.Integer, nullable=False),
-        sa.Column("is_married", sa.Boolean, nullable=False),
+        sa.Column("fullname", sa.String(200), nullable=False),
+        sa.Column("username", sa.String(200), nullable=False, unique=True),
+        sa.Column("password", sa.String(200), nullable=False),
     )
 
 

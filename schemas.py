@@ -23,7 +23,6 @@ class UserResponse(SQLModel):
 
 
 class UserPostRequest(SQLModel):
-    user_id: UUID
     title: str
     content: str
 

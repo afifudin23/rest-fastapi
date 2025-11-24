@@ -5,6 +5,8 @@ from sqlmodel import SQLModel, Field, Relationship
 
 
 class User(SQLModel, table=True):
+    __tablename__ = "users"
+
     id: UUID = Field(default_factory=uuid4, primary_key=True)
     fullname: str
     username: str = Field(unique=True)
@@ -14,6 +16,8 @@ class User(SQLModel, table=True):
 
 
 class UserPost(SQLModel, table=True):
+    __tablename__ = "user_posts"
+
     id: UUID = Field(default_factory=uuid4, primary_key=True)
     user_id: UUID = Field(foreign_key="users.id")
     title: str

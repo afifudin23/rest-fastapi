@@ -1,45 +1,27 @@
-import os
-from datetime import datetime, timedelta
 from uuid import uuid4
 
-import jwt
-from dotenv import load_dotenv
-from passlib.context import CryptContext
 from sqlmodel import Session
+from sqlmodel import select
 
 from models import User
-from schemas import UserRegisterRequest, UserResponse
-
-load_dotenv()
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-JWT_SECRET = os.getenv("JWT_SECRET")
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
-
-
-def create_access_token(data: dict, expires_delta: int = ACCESS_TOKEN_EXPIRE_MINUTES):
-    to_encode = data.copy()
-    expire = datetime.utcnow() + timedelta(minutes=expires_delta)
-    to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, JWT_SECRET, algorithm=ALGORITHM)
-    return encoded_jwt
+from schemas import UserRegisterRequest, UserResponse, UserLoginRequest
 
 
 def user_register(payload: UserRegisterRequest, db: Session) -> UserResponse:
     # VALIDATION IF EXIST USER
-    existing_user = db.query(User).filter_by(username=payload.username).first()
+    existing_user = db.exec(select(User).where(User.username == payload.username)).first()
     if existing_user:
         raise ValueError("Username already exists")
 
     # HASH PASSWORD
-    hashed_password = pwd_context.hash(payload.password)
+    hashed_password = argon2_context.hash(payload.password)
     new_user = User(
         id=uuid4(),
         fullname=payload.fullname,
         username=payload.username,
         password=hashed_password
     )
-    
+
     # ADD USER
     db.add(new_user)
     db.commit()
@@ -48,3 +30,16 @@ def user_register(payload: UserRegisterRequest, db: Session) -> UserResponse:
     # CREATE TOKEN
     token = create_access_token({"sub": str(new_user.id)})
     return UserResponse(id=new_user.id, token=token)
+
+
+def user_login(payload: UserLoginRequest, db: Session) -> UserResponse:
+    user = db.exec(select(User).where(User.username == payload.username)).first()
+    if not user:
+        raise ValueError("User not found")
+    valid_password = argon2_context.verify(payload.password, user.password)
+    if not valid_password:
+        raise ValueError("Wrong password")
+
+    # CREATE TOKEN
+    token = create_access_token({"sub": str(user.id)})
+    return UserResponse(id=user.id, token=token)

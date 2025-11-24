@@ -1,3 +1,5 @@
+passlib[argon2]
+argon2-cffi
 fastapi[standard]
 sqlalchemy
 psycopg2-binary
@@ -6,5 +8,4 @@ pydantic
 alembic
 uliweb-alembic
 sqlmodel
-passlib[bcrypt]
 pyjwt
