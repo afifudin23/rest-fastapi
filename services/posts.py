@@ -34,7 +34,7 @@ def get_posts(db: Session):
 def get_post_detail(post_id: UUID, db: Session) -> UserPostResponse:
     post = db.get(UserPost, post_id)
     if not post:
-        raise ValueError("Post not found")
+        raise HTTPException(status_code=404, detail="Post not found")
     return UserPostResponse(
         id=post.id,
         user_id=post.user_id,
@@ -47,9 +47,9 @@ def get_post_detail(post_id: UUID, db: Session) -> UserPostResponse:
 def update_post(post_id: UUID, payload: UserPostRequest, request: Request, db: Session) -> UserPostResponse:
     post = db.get(UserPost, post_id)
     if not post:
-        raise ValueError("Post not found")
+        raise HTTPException(status_code=404, detail="Post not found")
     if str(post.user_id) != request.state.user_id:
-        raise HTTPException(status_code=403, detail="Not allowed")
+        raise HTTPException(status_code=403, detail="User not allowed")
 
     post.title = payload.title
     post.content = payload.content
@@ -71,7 +71,7 @@ def delete_post(post_id: UUID, request: Request, db: Session):
     if not post:
         raise HTTPException(status_code=404, detail="Post not found")
     if str(post.user_id) != request.state.user_id:
-        raise HTTPException(status_code=403, detail="Not allowed")
+        raise HTTPException(status_code=403, detail="User not allowed")
 
     db.delete(post)
     db.commit()

@@ -1,0 +1,274 @@
+{
+	"info": {
+		"_postman_id": "2ad0228f-f173-465f-a7ea-9588156a0474",
+		"name": "Task1 Backend  Rest - FastAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26888314"
+	},
+	"item": [
+		{
+			"name": "User Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"fullname\":\"afifudin\",\n    \"username\":\"afif1\",\n    \"password\":\"123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}auth/register",
+					"host": [
+						"{{base-url}}auth"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\":\"afif1\",\n    \"password\":\"123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}auth/login",
+					"host": [
+						"{{base-url}}auth"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Current User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkOWIzOWZhMy04YzhhLTQ3NjItYjhiYS1hY2IxYjUzNzQzYjYiLCJleHAiOjE3NjQwMDE3MjJ9.ydr7-8WJU5nQMD1m5-wZH1B-QDA_zW4Z4o3EkpTAvIY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}auth/me",
+					"host": [
+						"{{base-url}}auth"
+					],
+					"path": [
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Post",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkOWIzOWZhMy04YzhhLTQ3NjItYjhiYS1hY2IxYjUzNzQzYjYiLCJleHAiOjE3NjM5OTYzOTl9.rb2thYIJ-rLYHenXZIAtRRyRGAujVsVNcg_kdx0H204",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"FastAPI\",\n    \"content\": \" Framework python yang sangat powerfull\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}posts",
+					"host": [
+						"{{base-url}}posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Posts",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkOWIzOWZhMy04YzhhLTQ3NjItYjhiYS1hY2IxYjUzNzQzYjYiLCJleHAiOjE3NjM5OTYzOTl9.rb2thYIJ-rLYHenXZIAtRRyRGAujVsVNcg_kdx0H204",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}posts",
+					"host": [
+						"{{base-url}}posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Post By Id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkOWIzOWZhMy04YzhhLTQ3NjItYjhiYS1hY2IxYjUzNzQzYjYiLCJleHAiOjE3NjM5OTYzOTl9.rb2thYIJ-rLYHenXZIAtRRyRGAujVsVNcg_kdx0H204",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"FastAPI\",\n    \"content\": \" Framework python yang sangat powerfull\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}posts/{{post-id}}",
+					"host": [
+						"{{base-url}}posts"
+					],
+					"path": [
+						"{{post-id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Post",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkNzU3ZmIyYy04NTdlLTRiOTItOGYxZS1jMTgzOGRhNGUxZDUiLCJleHAiOjE3NjQwMDI4MDJ9.ySJJizH1dLhP6f_qPVtQZsotCwoRGVdFkH2wOyss6D4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"FastAPI 2\",\n    \"content\": \" Framework python yang sangat powerfull 2\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}posts/{{post-id}}",
+					"host": [
+						"{{base-url}}posts"
+					],
+					"path": [
+						"{{post-id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Post",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkOWIzOWZhMy04YzhhLTQ3NjItYjhiYS1hY2IxYjUzNzQzYjYiLCJleHAiOjE3NjM5OTYzOTl9.rb2thYIJ-rLYHenXZIAtRRyRGAujVsVNcg_kdx0H204",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"FastAPI 2\",\n    \"content\": \" Framework python yang sangat powerfull 2\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}posts/{{post-id}}",
+					"host": [
+						"{{base-url}}posts"
+					],
+					"path": [
+						"{{post-id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "base-url",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "user-id",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "post-id",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
