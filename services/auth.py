@@ -1,6 +1,7 @@
+from uuid import UUID
 from uuid import uuid4
 
-from fastapi import Request, HTTPException
+from fastapi import HTTPException
 from sqlmodel import Session
 from sqlmodel import select
 
@@ -30,7 +31,7 @@ def user_register(payload: UserRegisterRequest, db: Session) -> UserResponse:
     db.refresh(new_user)
 
     # CREATE TOKEN
-    token = create_access_token({"sub": str(new_user.id)})
+    token = create_access_token({"user_d": str(new_user.id)})
     return UserResponse(id=new_user.id, token=token)
 
 
@@ -43,11 +44,10 @@ def user_login(payload: UserLoginRequest, db: Session) -> UserResponse:
         raise HTTPException(status_code=400, detail="Wrong password")
 
     # CREATE TOKEN
-    token = create_access_token({"sub": str(user.id)})
+    token = create_access_token({"user_id": str(user.id)})
     return UserResponse(id=user.id, token=token)
 
 
-def me(request: Request, db: Session):
-    user_id = request.state.user_id
+def me(user_id: UUID, db: Session):
     user = db.get(User, user_id)
     return {"id": user.id, "fullname": user.fullname, "username": user.username}

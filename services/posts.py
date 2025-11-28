@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from fastapi import Request, HTTPException
+from fastapi import HTTPException
 from sqlmodel import Session, select
 
 from models import UserPost
@@ -8,9 +8,9 @@ from schemas import UserPostRequest, UserPostResponse
 
 
 # CREATE POST
-def create_post(payload: UserPostRequest, request: Request, db: Session) -> UserPostResponse:
+def create_post(payload: UserPostRequest, user_id: UUID, db: Session) -> UserPostResponse:
     post = UserPost(
-        user_id=UUID(request.state.user_id),
+        user_id=user_id,
         title=payload.title,
         content=payload.content
     )
@@ -44,11 +44,11 @@ def get_post_detail(post_id: UUID, db: Session) -> UserPostResponse:
 
 
 # UPDATE POST
-def update_post(post_id: UUID, payload: UserPostRequest, request: Request, db: Session) -> UserPostResponse:
+def update_post(post_id: UUID, payload: UserPostRequest, user_id: UUID, db: Session) -> UserPostResponse:
     post = db.get(UserPost, post_id)
     if not post:
         raise HTTPException(status_code=404, detail="Post not found")
-    if str(post.user_id) != request.state.user_id:
+    if post.user_id != user_id:
         raise HTTPException(status_code=403, detail="User not allowed")
 
     post.title = payload.title
@@ -66,11 +66,11 @@ def update_post(post_id: UUID, payload: UserPostRequest, request: Request, db: S
 
 
 # DELETE POST
-def delete_post(post_id: UUID, request: Request, db: Session):
+def delete_post(post_id: UUID, user_id: UUID, db: Session) -> UserPostResponse:
     post = db.get(UserPost, post_id)
     if not post:
         raise HTTPException(status_code=404, detail="Post not found")
-    if str(post.user_id) != request.state.user_id:
+    if post.user_id != user_id:
         raise HTTPException(status_code=403, detail="User not allowed")
 
     db.delete(post)
